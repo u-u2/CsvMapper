@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvMapper", "CsvMapper\CsvMapper.csproj", "{703BCA75-2312-419E-A343-893CC87222E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvMapperTest", "CsvMapperTest\CsvMapperTest.csproj", "{94EBAE6B-D469-4BD3-AA24-869D3282A6E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{703BCA75-2312-419E-A343-893CC87222E6} = {703BCA75-2312-419E-A343-893CC87222E6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
