@@ -25,9 +25,7 @@ namespace CsvMapperNet.Reader.Tests {
 
 		[TestMethod()]
 		public void ReadCustomFieldTest() {
-			// Disabled ReadAllField
-			var config = new DisableReadAllFieldConfig();
-			using (var reader = new CsvReader(new StreamReader(s_fileName), config)) {
+			using (var reader = new CsvReader(new StreamReader(s_fileName))) {
 				foreach (var student in reader.ReadRecords<StudentSmall>()) {
 					Console.WriteLine(student);
 				}

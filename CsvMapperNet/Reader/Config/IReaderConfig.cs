@@ -12,9 +12,9 @@
 		int HeaderRow { get; }
 
 		/// <summary>
-		/// true read all field
+		/// true if validate the length of fields and ColumnAttributes.
 		/// </summary>
-		bool ReadAllField { get; }
+		bool ValidateFieldLength { get; }
 
 		/// <summary>
 		/// defines delimiter

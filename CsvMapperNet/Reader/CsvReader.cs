@@ -56,10 +56,8 @@ namespace CsvMapperNet.Reader {
 				})
 				.ToArray();
 			foreach (var fields in ReadFields()) {
-				if (_config.ReadAllField) {
-					if (properties.Length != fields.Length) {
-						throw new NotSupportedException("Column counts not match between entity and fields");
-					}
+				if (_config.ValidateFieldLength && properties.Length != fields.Length) {
+					throw new NotSupportedException($"not match length of the field and ColumnAttribute in {typeof(T)}");
 				}
 				var obj = new T();
 				foreach (var property in properties) {
