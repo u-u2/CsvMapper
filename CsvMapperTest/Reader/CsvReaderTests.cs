@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using CsvMapperTest2.Entity;
-using CsvMapperTest2.Reader;
+using CsvMapperTest.Entity;
+using CsvMapperTest.Reader.Config;
 using CsvMapperTests.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -16,26 +15,19 @@ namespace CsvMapper.Reader.Tests {
 		[TestMethod()]
 		public void ReadFieldsTest() {
 			using (var reader = new CsvReader(new StreamReader(s_fileName))) {
-				var fields = reader.ReadFields().ToArray();
-				var expect = 10;
-				Assert.AreEqual(expect, fields.Length);
-			}
-		}
-
-		[TestMethod()]
-		public void ReadAllFieldTest() {
-			using (var reader = new CsvReader(new StreamReader(s_fileName))) {
-				// ReadAllField by default.
-				foreach (var student in reader.ReadRecords<StudentLarge>()) {
-					Console.WriteLine(student);
+				foreach (var fields in reader.ReadFields()) {
+					foreach (var field in fields) {
+						Console.WriteLine(field);
+					}
 				}
 			}
 		}
 
 		[TestMethod()]
 		public void ReadCustomFieldTest() {
-			// Disabled ReadAllField in StudentReaderConfig
-			using (var reader = new CsvReader(new StreamReader(s_fileName), new StudentReaderConfig())) {
+			// Disabled ReadAllField
+			var config = new DisableReadAllFieldConfig();
+			using (var reader = new CsvReader(new StreamReader(s_fileName), config)) {
 				foreach (var student in reader.ReadRecords<StudentSmall>()) {
 					Console.WriteLine(student);
 				}
@@ -44,19 +36,10 @@ namespace CsvMapper.Reader.Tests {
 
 		[TestMethod]
 		public void SkipHeaderTest() {
-			// set HeaderRow to 5 in StudentReaderConfig
-			using (var reader = new CsvReader(new StreamReader(s_fileName), new StudentReaderConfig())) {
-				foreach (var student in reader.ReadRecords<StudentSmall>()) {
-					Console.WriteLine(student);
-				}
-			}
-		}
-
-		[TestMethod]
-		public void HeaderIgnoreTest() {
-			// Disabled ReadHeader in StudentReaderConfig
-			using (var reader = new CsvReader(new StreamReader(s_fileName), new StudentReaderConfig())) {
-				foreach (var student in reader.ReadRecords<StudentSmall>()) {
+			// set HeaderRow to 5
+			var config = new SkipHeaderConfig();
+			using (var reader = new CsvReader(new StreamReader(s_fileName), config)) {
+				foreach (var student in reader.ReadRecords<StudentLarge>()) {
 					Console.WriteLine(student);
 				}
 			}

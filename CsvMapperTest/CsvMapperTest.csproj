@@ -54,12 +54,14 @@
   <ItemGroup>
     <Compile Include="Entity\StudentLarge.cs" />
     <Compile Include="Entity\StudentSmall.cs" />
+    <Compile Include="Reader\Config\DisableReadAllFieldConfig.cs" />
     <Compile Include="Reader\CsvReaderTests.cs" />
-    <Compile Include="Reader\StudentReaderConfig.cs" />
+    <Compile Include="Reader\Config\SkipHeaderConfig.cs" />
+    <Compile Include="Reader\Config\StudentReaderConfig.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Writer\CsvWriterTests.cs" />
-    <Compile Include="Writer\StudentWriterConfig.cs" />
+    <Compile Include="Writer\Config\StudentWriterConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
