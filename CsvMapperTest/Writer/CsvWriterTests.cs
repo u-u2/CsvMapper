@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using CsvMapperTest2.Writer;
+using CsvMapperTest.Writer.Config;
 using CsvMapperTests.Entity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,15 +9,20 @@ namespace CsvMapper.Writer.Tests {
 	public class CsvWriterTests {
 
 		[TestMethod()]
-		public void WriteCsvTest() {
+		public void CreateTestCsv() {
 			int recordCount = 10;
 			var startIndex = 1;
 			var students = Enumerable.Range(startIndex, recordCount)
-				.Select(i => new StudentLarge {
-					Id = i,
-					Name = "Bob",
-					Age = 84,
-					AttendanceRate = 0.5,
+				.Select(i => {
+					if (i % 2 == 0) {
+						return new StudentLarge();
+					}
+					return new StudentLarge {
+						Id = i,
+						Name = "Bob",
+						Age = 84,
+						AttendanceRate = 0.5,
+					};
 				});
 			var fileName = $"students_{recordCount}.csv";
 			using (var writer = new CsvWriter(new StreamWriter(fileName))) {
@@ -55,7 +60,7 @@ namespace CsvMapper.Writer.Tests {
 			}
 			var actual = File.ReadAllLines(fileName);
 			var expect = Enumerable.Range(startIndex, recordCount)
-				.Select(i => $"{i}\tBob\t84\t0.5")
+				.Select(i => $"{i},Bob,84,0.5")
 				.ToArray();
 			Assert.IsTrue(actual.Length == recordCount);
 			CollectionAssert.AreEqual(expect, actual);

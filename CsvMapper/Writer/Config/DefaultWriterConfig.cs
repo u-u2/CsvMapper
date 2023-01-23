@@ -1,9 +1,9 @@
 ﻿namespace CsvMapper.Writer.Config {
-	internal class DefaultWriterConfig : IWriterConfig {
+	public class DefaultWriterConfig : IWriterConfig {
 
-		public string Delimiter => ",";
+		public virtual string Delimiter => ",";
 
-		public string NewLine => "\r\n";
+		public virtual string NewLine => "\r\n";
 
 	}
 }

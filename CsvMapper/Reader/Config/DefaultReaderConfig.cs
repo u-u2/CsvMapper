@@ -1,14 +1,25 @@
 ﻿namespace CsvMapper.Reader.Config {
-	internal class DefaultReaderConfig : IReaderConfig {
+	public class DefaultReaderConfig : IReaderConfig {
 
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+		public virtual bool SkipHeader => true;
 
-		public bool SkipHeader => true;
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+		public virtual bool ReadAllField => true;
 
-		public bool ReadAllField => true;
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+		public virtual int HeaderRow => 0;
 
-		public int HeaderRow => 0;
-
-		public string Delimiter => ",";
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+		public virtual string Delimiter => ",";
 
 	}
 }

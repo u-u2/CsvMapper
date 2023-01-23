@@ -1,6 +1,6 @@
 ﻿using CsvMapper.Attributes;
 
-namespace CsvMapperTest2.Entity {
+namespace CsvMapperTest.Entity {
 	internal class StudentSmall {
 
 		[Column(0, Name = "Id")]
