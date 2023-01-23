@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using CsvMapper.Attributes;
 using CsvMapper.Reader.Config;
-using Microsoft.VisualBasic.FileIO;
 
 namespace CsvMapper.Reader {
 	public class CsvReader : IReader, IDisposable {
 
 		private readonly TextReader _reader;
 		private readonly IReaderConfig _config;
-		private int _currentRow;
+		private readonly string _separatorPattern;
 
 		public CsvReader(TextReader reader) : this(reader, new DefaultReaderConfig()) {
 		}
@@ -20,7 +20,7 @@ namespace CsvMapper.Reader {
 		public CsvReader(TextReader reader, IReaderConfig config) {
 			_reader = reader;
 			_config = config;
-			_currentRow = 0;
+			_separatorPattern = string.Concat(_config.Delimiter, "(?=(?:[^\"]*\"[^\"]*\")|[^\"]*$)");
 		}
 
 		public IEnumerable<string[]> ReadFields() {
@@ -29,12 +29,9 @@ namespace CsvMapper.Reader {
 					_reader.ReadLine();
 				}
 			}
-			using (var parser = new TextFieldParser(_reader)) {
-				parser.SetDelimiters(_config.Delimiter);
-				while (!parser.EndOfData) {
-					yield return parser.ReadFields();
-					_currentRow++;
-				}
+			string line;
+			while ((line = _reader.ReadLine()) != null) {
+				yield return Regex.Split(line, _separatorPattern);
 			}
 		}
 
