@@ -5,10 +5,10 @@
 		public virtual bool SkipHeader => true;
 
 		/// <inheritdoc/>
-		public virtual bool ReadAllField => true;
+		public virtual int HeaderRow => 0;
 
 		/// <inheritdoc/>
-		public virtual int HeaderRow => 0;
+		public virtual bool ValidateFieldLength => true;
 
 		/// <inheritdoc/>
 		public virtual string Delimiter => ",";
