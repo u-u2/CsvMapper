@@ -14,15 +14,26 @@ namespace CsvMapperNet.Reader {
 		private readonly IReaderConfig _config;
 		private readonly string _separatorPattern;
 
+		/// <summary>
+		/// Create a new CsvReader.
+		/// </summary>
+		/// <param name="reader"></param>
 		public CsvReader(TextReader reader) : this(reader, new DefaultReaderConfig()) {
 		}
 
+		/// <summary>
+		/// Create a new CsvReader.
+		/// config is recommended to extend <see cref="DefaultReaderConfig"/>
+		/// </summary>
+		/// <param name="reader">reader</param>
+		/// <param name="config">config</param>
 		public CsvReader(TextReader reader, IReaderConfig config) {
 			_reader = reader;
 			_config = config;
 			_separatorPattern = string.Concat(_config.Delimiter, "(?=(?:[^\"]*\"[^\"]*\")|[^\"]*$)");
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<string[]> ReadFields() {
 			if (_config.SkipHeader) {
 				for (int i = 0; i < _config.HeaderRow; i++) {
@@ -35,6 +46,7 @@ namespace CsvMapperNet.Reader {
 			}
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<T> ReadRecords<T>() where T : new() {
 			var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
 				.Where(p => p.GetCustomAttribute<ColumnAttribute>(false) != null)

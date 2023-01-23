@@ -15,9 +15,20 @@ namespace CsvMapperNet.Writer {
 
 		private int _currentRow;
 
+		/// <summary>
+		/// Create a new CsvWriter.
+		/// Use <see cref="DefaultWriterConfig"/>
+		/// </summary>
+		/// <param name="writer">writer</param>
 		public CsvWriter(TextWriter writer) : this(writer, new DefaultWriterConfig()) {
 		}
 
+		/// <summary>
+		/// Create a new CsvWriter.
+		/// config is recommended to extend <see cref="DefaultWriterConfig"/>
+		/// </summary>
+		/// <param name="writer">writer</param>
+		/// <param name="config">config</param>
 		public CsvWriter(TextWriter writer, IWriterConfig config) {
 			_writer = writer;
 			_config = config;
@@ -25,6 +36,7 @@ namespace CsvMapperNet.Writer {
 			_writer.NewLine = _config.NewLine;
 		}
 
+		/// <inheritdoc/>
 		public void WriteFields(IEnumerable<string> fields) {
 			if (_currentRow > 0) {
 				_writer.WriteLine();
@@ -39,6 +51,7 @@ namespace CsvMapperNet.Writer {
 			_currentRow++;
 		}
 
+		/// <inheritdoc/>
 		public void WriteHeader<T>(T t) {
 			var headers = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
 				.Where(p => p.GetCustomAttribute<ColumnAttribute>(false) != null)
@@ -46,6 +59,7 @@ namespace CsvMapperNet.Writer {
 			WriteFields(headers);
 		}
 
+		/// <inheritdoc/>
 		public void WriteRecord<T>(T t) {
 			var fields = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
 				.Where(p => p.GetCustomAttribute<ColumnAttribute>(false) != null)
@@ -54,6 +68,7 @@ namespace CsvMapperNet.Writer {
 			WriteFields(fields);
 		}
 
+		/// <inheritdoc/>
 		public void WriteRecords<T>(IEnumerable<T> records) {
 			foreach (var record in records) {
 				WriteRecord(record);

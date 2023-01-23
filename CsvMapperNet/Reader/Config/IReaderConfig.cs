@@ -7,15 +7,18 @@
 		bool SkipHeader { get; }
 
 		/// <summary>
-		/// true number of properties must match number of columns
-		/// </summary>
-		bool ReadAllField { get; }
-
-		/// <summary>
 		/// start at 1
 		/// </summary>
 		int HeaderRow { get; }
 
+		/// <summary>
+		/// true read all field
+		/// </summary>
+		bool ReadAllField { get; }
+
+		/// <summary>
+		/// defines delimiter
+		/// </summary>
 		string Delimiter { get; }
 
 	}
