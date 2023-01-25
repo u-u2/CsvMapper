@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using CsvMapperNet.Attributes;
 using CsvMapperNet.Reader.Config;
+using CsvMapperNet.Reader.Parser;
 
 namespace CsvMapperNet.Reader {
 	public class CsvReader : IReader, IDisposable {
 
 		private readonly TextReader _reader;
 		private readonly IReaderConfig _config;
-		private readonly string _separatorPattern;
+		private readonly IParser _parser;
 
 		/// <summary>
 		/// Create a new CsvReader.
@@ -30,7 +30,7 @@ namespace CsvMapperNet.Reader {
 		public CsvReader(TextReader reader, IReaderConfig config) {
 			_reader = reader;
 			_config = config;
-			_separatorPattern = string.Concat(_config.Delimiter, "(?=(?:[^\"]*\"[^\"]*\")|[^\"]*$)");
+			_parser = new CsvParser(config.Delimiter);
 		}
 
 		/// <inheritdoc/>
@@ -42,7 +42,7 @@ namespace CsvMapperNet.Reader {
 			}
 			string line;
 			while ((line = _reader.ReadLine()) != null) {
-				yield return Regex.Split(line, _separatorPattern);
+				yield return _parser.ParseLine(line);
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace CsvMapperNet.Reader {
 				})
 				.ToArray();
 			foreach (var fields in ReadFields()) {
-				if (_config.ValidateFieldLength && properties.Length != fields.Length) {
+				if (_config.ValidateFieldLength && fields.Length != properties.Length) {
 					throw new NotSupportedException($"not match length of the field and ColumnAttribute in {typeof(T)}");
 				}
 				var obj = new T();
