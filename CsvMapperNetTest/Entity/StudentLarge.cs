@@ -12,8 +12,8 @@ namespace CsvMapperTests.Entity {
 		[Column(2, Name = "Age")]
 		public int Age { get; set; }
 
-		[Column(3, Name = "AttendanceRate")]
-		public double AttendanceRate { get; set; }
+		[Column(3, Name = "Post")]
+		public string Post { get; set; }
 
 		public override string ToString() {
 			return string.Format(
@@ -21,7 +21,7 @@ namespace CsvMapperTests.Entity {
 				Id,
 				Name,
 				Age,
-				AttendanceRate);
+				Post);
 		}
 
 	}
