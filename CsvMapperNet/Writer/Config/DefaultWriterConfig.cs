@@ -3,7 +3,7 @@
 
 
 		/// <inheritdoc/>
-		public virtual string Delimiter => ",";
+		public virtual char Delimiter => ',';
 
 		/// <inheritdoc/>
 		public virtual string NewLine => "\r\n";

@@ -11,7 +11,7 @@
 		public virtual bool ValidateFieldLength => true;
 
 		/// <inheritdoc/>
-		public virtual string Delimiter => ",";
+		public virtual char Delimiter => ',';
 
 	}
 }
