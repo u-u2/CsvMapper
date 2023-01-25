@@ -56,9 +56,12 @@
     <Compile Include="Reader\Config\IReaderConfig.cs" />
     <Compile Include="Reader\CsvReader.cs" />
     <Compile Include="Reader\IReader.cs" />
+    <Compile Include="Reader\Parser\CsvParser.cs" />
+    <Compile Include="Reader\Parser\IParser.cs" />
     <Compile Include="Writer\Config\DefaultWriterConfig.cs" />
     <Compile Include="Writer\Config\IWriterConfig.cs" />
     <Compile Include="Writer\CsvWriter.cs" />
+    <Compile Include="Writer\Decorator\FieldDecorator.cs" />
     <Compile Include="Writer\IWriter.cs" />
   </ItemGroup>
   <ItemGroup>
