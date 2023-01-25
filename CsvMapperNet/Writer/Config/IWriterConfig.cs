@@ -4,7 +4,7 @@
 		/// <summary>
 		/// defines delimiter
 		/// </summary>
-		string Delimiter { get; }
+		char Delimiter { get; }
 
 		/// <summary>
 		/// defines new line

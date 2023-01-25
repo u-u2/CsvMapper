@@ -6,12 +6,14 @@ using System.Reflection;
 using System.Text;
 using CsvMapperNet.Attributes;
 using CsvMapperNet.Writer.Config;
+using CsvMapperNet.Writer.Decorator;
 
 namespace CsvMapperNet.Writer {
 	public class CsvWriter : IWriter, IDisposable {
 
 		private readonly TextWriter _writer;
 		private readonly IWriterConfig _config;
+		private readonly FieldDecorator _decorator;
 
 		private int _currentRow;
 
@@ -32,6 +34,7 @@ namespace CsvMapperNet.Writer {
 		public CsvWriter(TextWriter writer, IWriterConfig config) {
 			_writer = writer;
 			_config = config;
+			_decorator = new FieldDecorator(config.Delimiter);
 			_currentRow = 0;
 			_writer.NewLine = _config.NewLine;
 		}
@@ -43,8 +46,8 @@ namespace CsvMapperNet.Writer {
 			}
 			var sb = new StringBuilder();
 			foreach (var field in fields) {
-				sb.Append(field)
-					.Append(_config.Delimiter);
+				var decorated = _decorator.Decorate(field);
+				sb.Append(decorated).Append(_config.Delimiter);
 			}
 			sb.Remove(sb.Length - 1, 1);
 			_writer.Write(sb.ToString());

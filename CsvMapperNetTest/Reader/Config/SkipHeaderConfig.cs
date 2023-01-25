@@ -5,7 +5,9 @@ namespace CsvMapperTest.Reader.Config {
 
 		public override bool SkipHeader => true;
 
-		public override int HeaderRow => 5;
+		public override int HeaderRow => 2;
+
+		public override bool ValidateFieldLength => false;
 
 	}
 }
