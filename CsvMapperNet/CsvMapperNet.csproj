@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ColumnAttribute.cs" />
+    <Compile Include="Delegates\FieldCreator.cs" />
+    <Compile Include="Delegates\ObjectCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader\Config\DefaultReaderConfig.cs" />
     <Compile Include="Reader\Config\IReaderConfig.cs" />
