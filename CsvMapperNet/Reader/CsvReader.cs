@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using CsvMapperNet.Mapper;
 using CsvMapperNet.Reader.Config;
 using CsvMapperNet.Reader.Parser;
@@ -32,13 +34,7 @@ namespace CsvMapperNet.Reader {
 		/// <inheritdoc/>
 		public IEnumerable<string[]> ReadFields() {
 			var parser = new CsvParser(_config.Delimiter);
-			if (_config.SkipHeader) {
-				for (int i = 0; i <= _config.HeaderRow; i++) {
-					_reader.ReadLine();
-				}
-			}
-			string line;
-			while ((line = _reader.ReadLine()) != null) {
+			foreach (var line in ReadLines().Skip(_config.HeaderRow + 1)) {
 				yield return parser.ParseLine(line);
 			}
 		}
@@ -54,6 +50,31 @@ namespace CsvMapperNet.Reader {
 		public void Dispose() {
 			_reader.Dispose();
 		}
+
+		private IEnumerable<ReadOnlyMemory<char>> ReadLines() {
+			var buffer = new char[3];
+			var inQuote = false;
+			int readBytes;
+			var builder = new StringBuilder();
+			while ((readBytes = _reader.Read(buffer, 0, buffer.Length)) > 0) {
+				var next = 0;
+				for (int i = 0; i < readBytes; i++) {
+					if (buffer[i] == '"') {
+						inQuote = !inQuote;
+					}
+					if (!inQuote && buffer[i] == '\n') {
+						yield return builder.Append(buffer, next, i - next)
+							.ToString()
+							.AsMemory();
+						builder.Clear();
+						next = i + 1;
+					}
+				}
+				builder.Append(buffer, next, readBytes - next);
+			}
+			yield return builder.ToString().AsMemory();
+		}
+
 
 	}
 }
