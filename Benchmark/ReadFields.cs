@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,22 +13,14 @@ using Microsoft.VisualBasic.FileIO;
 namespace Benchmark {
 	public class ReadFields {
 
-		private readonly string _csv = @"csv\organizations-100000.csv";
+		private readonly string _csv = @"csv\organizations-10000.csv";
 
 		[Benchmark]
 		public void CsvReader() {
 			using (var reader = new CsvReader(new StreamReader(_csv))) {
 				foreach (var fields in reader.ReadFields()) {
-				}
-			}
-		}
-
-		[Benchmark]
-		public void StreamReader() {
-			using (var reader = new StreamReader(_csv)) {
-				string line;
-				while ((line = reader.ReadLine()) != null) {
-					line.Split(',');
+					foreach (var field in fields) {
+					}
 				}
 			}
 		}
@@ -37,7 +30,8 @@ namespace Benchmark {
 			using (var parser = new TextFieldParser(_csv)) {
 				parser.SetDelimiters(",");
 				while (!parser.EndOfData) {
-					parser.ReadFields();
+					foreach (var field in parser.ReadFields()) {
+					}
 				}
 			}
 		}
