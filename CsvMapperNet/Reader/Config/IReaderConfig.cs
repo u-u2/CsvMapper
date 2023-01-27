@@ -7,7 +7,7 @@
 		bool SkipHeader { get; }
 
 		/// <summary>
-		/// start at 1
+		/// start at 0
 		/// </summary>
 		int HeaderRow { get; }
 
