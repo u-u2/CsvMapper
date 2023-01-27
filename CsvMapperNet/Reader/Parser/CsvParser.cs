@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CsvMapperNet.Reader.Parser {
 	internal class CsvParser : IParser {
@@ -9,30 +10,24 @@ namespace CsvMapperNet.Reader.Parser {
 			_delimiter = delimiter;
 		}
 
-		public string[] ParseLine(string line) {
-			var delimiterIndexes = new List<int>();
-			for (int i = 0; i < line.Length; i++) {
-				if (line[i] == '"') {
-					i++;
-					while (line[i] != '"') {
-						i++;
-					}
+		public string[] ParseLine(ReadOnlyMemory<char> lineChunks) {
+			var inQuote = false;
+			var fields = new List<string>();
+			var nextFieldStart = 0;
+			for (int i = 0; i < lineChunks.Length; i++) {
+				if (lineChunks.Span[i] == '"') {
+					inQuote = !inQuote;
 				}
-				if (line[i] == _delimiter) {
-					delimiterIndexes.Add(i);
+				if (!inQuote && lineChunks.Span[i] == ',') {
+					fields.Add(lineChunks.Slice(nextFieldStart, i - nextFieldStart).ToString());
+					nextFieldStart = i + 1;
+				}
+				if (i == lineChunks.Length - 1) {
+					fields.Add(lineChunks.Slice(nextFieldStart, i + 1 - nextFieldStart).ToString());
 				}
 			}
-			// sets last delimiter position as line.Length 
-			delimiterIndexes.Add(line.Length);
-			var fields = new string[delimiterIndexes.Count];
-			var start = 0;
-			for (int i = 0; i < delimiterIndexes.Count; i++) {
-				var index = delimiterIndexes[i];
-				var length = index - start;
-				fields[i] = line.Substring(start, length);
-				start = index + 1;
-			}
-			return fields;
+			return fields.ToArray();
 		}
+
 	}
 }

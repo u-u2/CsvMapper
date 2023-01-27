@@ -1,7 +1,9 @@
-﻿namespace CsvMapperNet.Reader.Parser {
+﻿using System;
+
+namespace CsvMapperNet.Reader.Parser {
 	internal interface IParser {
 
-		string[] ParseLine(string line);
+		string[] ParseLine(ReadOnlyMemory<char> lineChunks);
 
 	}
 }
