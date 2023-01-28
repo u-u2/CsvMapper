@@ -20,17 +20,25 @@ namespace CsvMapperNet.Reader.Tests {
 
 		[TestMethod()]
 		public void ReadFieldsTest() {
-			using (var reader = new CsvReader(new StringReader(s_records))) {
+			var config = new DisableSkipHeaderConfig();
+			using (var reader = new CsvReader(new StringReader(s_records), config)) {
 				var fields = reader.ReadTable().ToArray();
-				for (int i = 0; i < fields.Length; i++) {
+				Assert.AreEqual(s_fieldWidth, fields[0].Length);
+				Assert.AreEqual("Id", fields[0][0]);
+				Assert.AreEqual("\"Name\"", fields[0][1]);
+				Assert.AreEqual("Age", fields[0][2]);
+				Assert.AreEqual("\"Post\"", fields[0][3]);
+				for (int i = 1; i < fields.Length; i++) {
 					Assert.AreEqual(s_fieldWidth, fields[i].Length);
-					Assert.AreEqual((i + 1).ToString(), fields[i][0]);
+					Assert.AreEqual((i).ToString(), fields[i][0]);
 					Assert.AreEqual("\"Bob\"", fields[i][1]);
 					Assert.AreEqual("84", fields[i][2]);
 					Assert.AreEqual("\"This, is a, test\"", fields[i][3]);
+					//foreach (var field in fields[i]) {
+					//	Console.WriteLine(field);
+					//}
 				}
-				// skipped header
-				Assert.AreEqual(s_recordCount - 1, fields.Length);
+				Assert.AreEqual(s_recordCount, fields.Length);
 			}
 		}
 

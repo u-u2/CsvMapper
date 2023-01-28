@@ -33,15 +33,15 @@ namespace CsvMapperNet.Reader {
 		/// <inheritdoc/>
 		public IEnumerable<string[]> ReadTable() {
 			var parser = new CsvParser(_config.Delimiter);
-			foreach (var line in ReadLines().Skip(_config.HeaderRow + 1)) {
+			var lines = _config.SkipHeader ? ReadLines().Skip(_config.HeaderRow + 1) : ReadLines();
+			foreach (var line in lines) {
 				yield return parser.ParseLine(line.Span);
 			}
 		}
 
 		public IEnumerable<string> ReadFields() {
-			var parser = new CsvParser(_config.Delimiter);
-			foreach (var line in ReadLines().Skip(_config.HeaderRow + 1)) {
-				foreach (var field in parser.ParseLine(line.Span)) {
+			foreach (var fields in ReadTable()) {
+				foreach (var field in fields) {
 					yield return field;
 				}
 			}
@@ -75,10 +75,15 @@ namespace CsvMapperNet.Reader {
 							.ToString()
 							.AsMemory();
 						builder.Clear();
+						// exclude previous newline
 						next = i + 1;
 					}
 				}
 				builder.Append(buffer, next, readBytes - next);
+			}
+			// newline at last line
+			if (builder.Length == 1) {
+				yield break;
 			}
 			yield return builder.ToString().AsMemory();
 		}

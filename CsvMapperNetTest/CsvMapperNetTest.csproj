@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Entity\StudentLarge.cs" />
     <Compile Include="Entity\StudentSmall.cs" />
+    <Compile Include="Reader\Config\DisableSkipHeaderConfig.cs" />
     <Compile Include="Reader\Config\DisableValidateFieldLengthConfig.cs" />
     <Compile Include="Reader\CsvReaderTests.cs" />
     <Compile Include="Reader\Config\SkipHeaderConfig.cs" />
