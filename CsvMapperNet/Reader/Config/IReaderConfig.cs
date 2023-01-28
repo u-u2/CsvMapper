@@ -21,5 +21,7 @@
 		/// </summary>
 		char Delimiter { get; }
 
+		int BufferSize { get; }
+
 	}
 }

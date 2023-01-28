@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvMapperNetTest", "CsvMapp
 		{703BCA75-2312-419E-A343-893CC87222E6} = {703BCA75-2312-419E-A343-893CC87222E6}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{20D7A062-252C-4169-AF38-31202BB64926}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{94EBAE6B-D469-4BD3-AA24-869D3282A6E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94EBAE6B-D469-4BD3-AA24-869D3282A6E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94EBAE6B-D469-4BD3-AA24-869D3282A6E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20D7A062-252C-4169-AF38-31202BB64926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20D7A062-252C-4169-AF38-31202BB64926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20D7A062-252C-4169-AF38-31202BB64926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20D7A062-252C-4169-AF38-31202BB64926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

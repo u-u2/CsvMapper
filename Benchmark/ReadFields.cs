@@ -16,9 +16,9 @@ namespace Benchmark {
 		private readonly string _csv = @"csv\organizations-10000.csv";
 
 		[Benchmark]
-		public void CsvReader() {
+		public void CsvReader_ReadTable() {
 			using (var reader = new CsvReader(new StreamReader(_csv))) {
-				foreach (var fields in reader.ReadFields()) {
+				foreach (var fields in reader.ReadTable()) {
 					foreach (var field in fields) {
 					}
 				}
@@ -36,6 +36,15 @@ namespace Benchmark {
 			}
 		}
 
+		[Benchmark]
+		public void StreamReader() {
+			using (var reader = new StreamReader(_csv)) {
+				string line;
+				while ((line = reader.ReadLine()) != null) {
+					line.Split(',');
+				}
+			}
+		}
 
 	}
 }

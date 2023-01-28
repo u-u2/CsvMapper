@@ -13,5 +13,7 @@
 		/// <inheritdoc/>
 		public virtual char Delimiter => ',';
 
+		public int BufferSize => 8192;
+
 	}
 }

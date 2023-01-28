@@ -22,7 +22,6 @@ namespace CsvMapperNet.Reader {
 
 		/// <summary>
 		/// Create a new CsvReader.
-		/// config is recommended to extend <see cref="DefaultReaderConfig"/>
 		/// </summary>
 		/// <param name="reader">reader</param>
 		/// <param name="config">config</param>
@@ -32,17 +31,26 @@ namespace CsvMapperNet.Reader {
 		}
 
 		/// <inheritdoc/>
-		public IEnumerable<string[]> ReadFields() {
+		public IEnumerable<string[]> ReadTable() {
 			var parser = new CsvParser(_config.Delimiter);
 			foreach (var line in ReadLines().Skip(_config.HeaderRow + 1)) {
-				yield return parser.ParseLine(line);
+				yield return parser.ParseLine(line.Span);
+			}
+		}
+
+		public IEnumerable<string> ReadFields() {
+			var parser = new CsvParser(_config.Delimiter);
+			foreach (var line in ReadLines().Skip(_config.HeaderRow + 1)) {
+				foreach (var field in parser.ParseLine(line.Span)) {
+					yield return field;
+				}
 			}
 		}
 
 		/// <inheritdoc/>
 		public IEnumerable<T> ReadRecords<T>() where T : new() {
 			var creator = new ObjectCreator(_config.ValidateFieldLength);
-			foreach (var fields in ReadFields()) {
+			foreach (var fields in ReadTable()) {
 				yield return creator.Create<T>().Invoke(fields);
 			}
 		}
@@ -52,7 +60,7 @@ namespace CsvMapperNet.Reader {
 		}
 
 		private IEnumerable<ReadOnlyMemory<char>> ReadLines() {
-			var buffer = new char[3];
+			var buffer = new char[_config.BufferSize];
 			var inQuote = false;
 			int readBytes;
 			var builder = new StringBuilder();
@@ -74,7 +82,6 @@ namespace CsvMapperNet.Reader {
 			}
 			yield return builder.ToString().AsMemory();
 		}
-
 
 	}
 }

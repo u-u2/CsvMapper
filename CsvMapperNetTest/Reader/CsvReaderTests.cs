@@ -11,7 +11,7 @@ namespace CsvMapperNet.Reader.Tests {
 	public class CsvReaderTests {
 
 		private static readonly int s_recordCount = 3;
-		private static readonly int s_fieldsWidth = 4;
+		private static readonly int s_fieldWidth = 4;
 		private static readonly string s_records = string.Format(
 			"{0}\n{1}\n{2}",
 			"Id,\"Name\",Age,\"Post\"",
@@ -21,9 +21,9 @@ namespace CsvMapperNet.Reader.Tests {
 		[TestMethod()]
 		public void ReadFieldsTest() {
 			using (var reader = new CsvReader(new StringReader(s_records))) {
-				var fields = reader.ReadFields().ToArray();
+				var fields = reader.ReadTable().ToArray();
 				for (int i = 0; i < fields.Length; i++) {
-					Assert.AreEqual(s_fieldsWidth, fields[i].Length);
+					Assert.AreEqual(s_fieldWidth, fields[i].Length);
 					Assert.AreEqual((i + 1).ToString(), fields[i][0]);
 					Assert.AreEqual("\"Bob\"", fields[i][1]);
 					Assert.AreEqual("84", fields[i][2]);

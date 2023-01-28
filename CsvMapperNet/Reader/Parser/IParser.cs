@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CsvMapperNet.Reader.Parser {
 	internal interface IParser {
 
-		string[] ParseLine(ReadOnlyMemory<char> lineChunks);
+		string[] ParseLine(ReadOnlySpan<char> line);
 
 	}
 }

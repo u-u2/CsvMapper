@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace CsvMapperNet.Reader.Parser {
 	internal class CsvParser : IParser {
@@ -10,23 +13,33 @@ namespace CsvMapperNet.Reader.Parser {
 			_delimiter = delimiter;
 		}
 
-		public string[] ParseLine(ReadOnlyMemory<char> lineChunks) {
+		public string[] ParseLine(ReadOnlySpan<char> line) {
+			var indexes = GetSeparatorIndexes(line);
+			indexes.Add(line.Length);
+			var fields = new string[indexes.Count];
+			var next = 0;
+			for (int i = 0; i < indexes.Count; i++) {
+				var index = indexes[i];
+				var length = index - next;
+				fields[i] = line.Slice(next, length).ToString();
+				next = index + 1;
+			}
+			return fields;
+		}
+
+		private List<int> GetSeparatorIndexes(ReadOnlySpan<char> line) {
+			var indexes = new List<int>();
 			var inQuote = false;
-			var fields = new List<string>();
-			var nextFieldStart = 0;
-			for (int i = 0; i < lineChunks.Length; i++) {
-				if (lineChunks.Span[i] == '"') {
+			for (int i = 0; i < line.Length; i++) {
+				var ch = line[i];
+				if (ch == '"') {
 					inQuote = !inQuote;
 				}
-				if (!inQuote && lineChunks.Span[i] == ',') {
-					fields.Add(lineChunks.Slice(nextFieldStart, i - nextFieldStart).ToString());
-					nextFieldStart = i + 1;
-				}
-				if (i == lineChunks.Length - 1) {
-					fields.Add(lineChunks.Slice(nextFieldStart, i + 1 - nextFieldStart).ToString());
+				if (!inQuote && ch == _delimiter) {
+					indexes.Add(i);
 				}
 			}
-			return fields.ToArray();
+			return indexes;
 		}
 
 	}
