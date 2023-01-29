@@ -2,25 +2,28 @@
 	public interface IReaderConfig {
 
 		/// <summary>
-		/// true skip read header
+		/// true skip header.
 		/// </summary>
 		bool SkipHeader { get; }
 
 		/// <summary>
-		/// start at 0
+		/// start at 0.
 		/// </summary>
 		int HeaderRow { get; }
 
 		/// <summary>
-		/// true if validate the length of fields and ColumnAttributes.
+		/// true to validate the length of field and ColumnAttribute count.
 		/// </summary>
 		bool ValidateFieldLength { get; }
 
 		/// <summary>
-		/// defines delimiter
+		/// defines delimiter.
 		/// </summary>
 		char Delimiter { get; }
 
+		/// <summary>
+		/// the buffer size.
+		/// </summary>
 		int BufferSize { get; }
 
 	}

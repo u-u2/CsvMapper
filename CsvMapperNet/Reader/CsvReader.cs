@@ -14,17 +14,18 @@ namespace CsvMapperNet.Reader {
 		private readonly IReaderConfig _config;
 
 		/// <summary>
-		/// Create a new CsvReader.
+		/// initialize a new instance of the CsvReader.
 		/// </summary>
 		/// <param name="reader"></param>
 		public CsvReader(TextReader reader) : this(reader, new DefaultReaderConfig()) {
 		}
 
 		/// <summary>
-		/// Create a new CsvReader.
+		/// initialize a new instance of the CsvReader using <see cref="IReaderConfig"/>.
+		/// <para><see cref="DefaultReaderConfig"/></para>
 		/// </summary>
 		/// <param name="reader">reader</param>
-		/// <param name="config">config</param>
+		/// <param name="config">cofig</param>
 		public CsvReader(TextReader reader, IReaderConfig config) {
 			_reader = reader;
 			_config = config;
@@ -39,6 +40,7 @@ namespace CsvMapperNet.Reader {
 			}
 		}
 
+		/// <inheritdoc/>
 		public IEnumerable<string> ReadFields() {
 			foreach (var fields in ReadTable()) {
 				foreach (var field in fields) {
@@ -61,9 +63,9 @@ namespace CsvMapperNet.Reader {
 
 		private IEnumerable<ReadOnlyMemory<char>> ReadLines() {
 			var buffer = new char[_config.BufferSize];
+			var builder = new StringBuilder();
 			var inQuote = false;
 			int readBytes;
-			var builder = new StringBuilder();
 			while ((readBytes = _reader.Read(buffer, 0, buffer.Length)) > 0) {
 				var next = 0;
 				for (int i = 0; i < readBytes; i++) {
@@ -75,13 +77,13 @@ namespace CsvMapperNet.Reader {
 							.ToString()
 							.AsMemory();
 						builder.Clear();
-						// exclude previous newline
+						// exclude previous newline.
 						next = i + 1;
 					}
 				}
 				builder.Append(buffer, next, readBytes - next);
 			}
-			// newline at last line
+			// exclude newline at last line.
 			if (builder.Length == 1) {
 				yield break;
 			}
