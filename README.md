@@ -18,7 +18,7 @@ https://www.nuget.org/packages/CsvMapperNet
     var csv = "example.csv";
     using (var reader = new CsvReader(new StreamReader(csv))){
         foreach(var record in reader.ReadTable()){
-            for(let i = 0; i < record.length; i++){
+            for(int i = 0; i < record.length; i++){
                 var field = record[i];
             }
         }
