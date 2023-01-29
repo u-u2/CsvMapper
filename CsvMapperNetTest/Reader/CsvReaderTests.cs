@@ -17,7 +17,7 @@ namespace CsvMapperNet.Reader.Tests {
 			"{0}\n{1}\n{2}",
 			"Id,\"Name\",Age,\"Post\"",
 			"1,\"Bob\",84,\"This, \"\"is\"\" a, test\"",
-			"2,\"Bob\",84,\"This, is a, test\"");
+			"2,\"Bob\",84,\"This, \"\"is\"\" a, test\"");
 
 		[TestMethod()]
 		public void ReadFieldsTest() {

@@ -11,13 +11,27 @@ using CsvMapperNet.Reader;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Benchmark {
+
+	[MemoryDiagnoser]
+	[ShortRunJob]
+	[MaxColumn, MinColumn]
 	public class ReadFields {
 
-		private readonly string _csv = @"csv\organizations-10000.csv";
+		private readonly string _csv;
+
+		public ReadFields() {
+			var header = "column1,column2,column3,column4,column5,column6\n";
+			var recordCount = 100000;
+			var builder = new StringBuilder(header);
+			for (int i = 0; i < recordCount; i++) {
+				builder.Append("A,B,C,D,E,F").Append('\n');
+			}
+			_csv = builder.ToString();
+		}
 
 		[Benchmark]
 		public void CsvReader_ReadTable() {
-			using (var reader = new CsvReader(new StreamReader(_csv))) {
+			using (var reader = new CsvReader(new StringReader(_csv))) {
 				foreach (var fields in reader.ReadTable()) {
 					foreach (var field in fields) {
 					}
@@ -27,7 +41,7 @@ namespace Benchmark {
 
 		[Benchmark]
 		public void TextFieldParser() {
-			using (var parser = new TextFieldParser(_csv)) {
+			using (var parser = new TextFieldParser(new StringReader(_csv))) {
 				parser.SetDelimiters(",");
 				while (!parser.EndOfData) {
 					foreach (var field in parser.ReadFields()) {
@@ -38,7 +52,7 @@ namespace Benchmark {
 
 		[Benchmark]
 		public void StreamReader() {
-			using (var reader = new StreamReader(_csv)) {
+			using (var reader = new StringReader(_csv)) {
 				string line;
 				while ((line = reader.ReadLine()) != null) {
 					line.Split(',');
