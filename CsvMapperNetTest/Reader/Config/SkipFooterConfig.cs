@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using CsvMapperNet.Reader.Config;
 
 namespace CsvMapperTest.Reader.Config {
-	internal class DisableSkipHeaderConfig : DefaultReaderConfig {
+	internal class SkipFooterConfig : DefaultReaderConfig {
 
-		public override bool SkipHeader => false;
+		public override bool SkipFooter => true;
+
+		public override int FooterRowCount => 2;
 
 	}
 }

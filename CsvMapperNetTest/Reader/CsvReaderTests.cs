@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using CsvMapperNet.Reader.Config;
 using CsvMapperTest.Entity;
 using CsvMapperTest.Reader.Config;
 using CsvMapperTests.Entity;
@@ -15,12 +16,12 @@ namespace CsvMapperNet.Reader.Tests {
 		private static readonly string s_records = string.Format(
 			"{0}\n{1}\n{2}",
 			"Id,\"Name\",Age,\"Post\"",
-			"1,\"Bob\",84,\"This, is a, test\"",
+			"1,\"Bob\",84,\"This, \"\"is\"\" a, test\"",
 			"2,\"Bob\",84,\"This, is a, test\"");
 
 		[TestMethod()]
 		public void ReadFieldsTest() {
-			var config = new DisableSkipHeaderConfig();
+			var config = new BufferConfig();
 			using (var reader = new CsvReader(new StringReader(s_records), config)) {
 				var fields = reader.ReadTable().ToArray();
 				Assert.AreEqual(s_fieldWidth, fields[0].Length);
@@ -33,10 +34,10 @@ namespace CsvMapperNet.Reader.Tests {
 					Assert.AreEqual((i).ToString(), fields[i][0]);
 					Assert.AreEqual("\"Bob\"", fields[i][1]);
 					Assert.AreEqual("84", fields[i][2]);
-					Assert.AreEqual("\"This, is a, test\"", fields[i][3]);
-					//foreach (var field in fields[i]) {
-					//	Console.WriteLine(field);
-					//}
+					Assert.AreEqual("\"This, \"\"is\"\" a, test\"", fields[i][3]);
+					foreach (var field in fields[i]) {
+						Console.WriteLine(field);
+					}
 				}
 				Assert.AreEqual(s_recordCount, fields.Length);
 			}

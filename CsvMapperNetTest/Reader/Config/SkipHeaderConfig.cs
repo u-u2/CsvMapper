@@ -7,7 +7,5 @@ namespace CsvMapperTest.Reader.Config {
 
 		public override int HeaderRow => 2;
 
-		public override bool ValidateFieldLength => false;
-
 	}
 }
